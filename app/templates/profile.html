@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ user.username }}'s Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>{{ user.username }}'s Profile</h1>
+    
+    <div class="profile-info">
+        <h2>Profile Information</h2>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <!-- Здесь можно добавить другие данные профиля, например, дату регистрации -->
+    </div>
+
+    <div class="user-posts">
+        <h2>{{ user.username }}'s Posts</h2>
+        {% if user.posts %}
+            {% for post in user.posts %}
+                <div class="post">
+                    <h3>{{ post.title }}</h3>
+                    <p>{{ post.content }}</p>
+                    <small>Posted on {{ post.date_created.strftime('%Y-%m-%d') }}</small>
+                    <hr>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>{{ user.username }} has no posts yet.</p>
+        {% endif %}
+    </div>
+
+    <!-- Опционально: Кнопка для редактирования профиля -->
+    {% if current_user.is_authenticated and current_user.id == user.id %}
+        <a href="{{ url_for('main.edit_profile') }}" class="btn">Edit Profile</a>
+    {% endif %}
+</body>
+</html>
